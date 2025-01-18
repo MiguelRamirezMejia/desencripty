@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encriptar y Desencriptar Texto</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        textarea {
+            width: 80%;
+            margin: 10px;
+            padding: 10px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 16px;
+        }
+        p {
+            color: red;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Encriptar y Desencriptar Texto</h1>
+    <textarea id="inputText" placeholder="Ingrese texto aquí..."></textarea><br>
+    <button onclick="encrypt()">Encriptar</button>
+    <button onclick="decrypt()">Desencriptar</button>
+    <h2>Resultado:</h2>
+    <textarea id="outputText" readonly></textarea>
+    <p>⚠️ Este sistema utiliza una contraseña fija para encriptar y desencriptar. Asegúrese de no compartirla si desea mantener la seguridad.</p>
+
+    <script>
+        // Clave fija para encriptar y desencriptar
+        const MASTER_KEY = "123";
+
+        function encrypt() {
+            const text = document.getElementById('inputText').value;
+
+            if (!text) {
+                alert('Por favor, ingrese texto para encriptar.');
+                return;
+            }
+
+            // Encriptar el texto utilizando la clave fija
+            const encrypted = CryptoJS.AES.encrypt(text, MASTER_KEY).toString();
+            document.getElementById('outputText').value = encrypted;
+            alert('Texto encriptado con éxito.');
+        }
+
+        function decrypt() {
+            const encryptedText = document.getElementById('inputText').value;
+
+            if (!encryptedText) {
+                alert('Por favor, ingrese texto encriptado para desencriptar.');
+                return;
+            }
+
+            try {
+                // Desencriptar el texto utilizando la clave fija
+                const decrypted = CryptoJS.AES.decrypt(encryptedText, MASTER_KEY).toString(CryptoJS.enc.Utf8);
+                if (!decrypted) throw new Error();
+
+                document.getElementById('outputText').value = decrypted;
+                alert('Texto desencriptado con éxito.');
+            } catch (error) {
+                alert('No se pudo desencriptar. Verifique el texto encriptado.');
+            }
+        }
+    </script>
+</body>
+</html>
