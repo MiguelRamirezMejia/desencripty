@@ -52,14 +52,14 @@
             // Encriptar el texto utilizando la clave fija
             const encrypted = CryptoJS.AES.encrypt(text, MASTER_KEY).toString();
             document.getElementById('outputText').value = encrypted;
-            alert('Deisy texto encriptado con éxito.');
+            alert('Texto encriptado con éxito.');
         }
 
         function decrypt() {
             const encryptedText = document.getElementById('inputText').value;
 
             if (!encryptedText) {
-                alert('Deisy, por favor ingrese texto encriptado para desencriptar.');
+                alert('por favor ingrese texto encriptado para desencriptar.');
                 return;
             }
 
