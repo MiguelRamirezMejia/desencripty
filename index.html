@@ -1,79 +1,121 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Encriptar y Desencriptar Texto</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 20px;
-        }
-        textarea {
-            width: 80%;
-            margin: 10px;
-            padding: 10px;
-            font-size: 16px;
-        }
-        button {
-            padding: 10px 20px;
-            margin: 5px;
-            font-size: 16px;
-        }
-        p {
-            color: red;
-            font-size: 14px;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Encriptar y Desencriptar Texto (Seguro)</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 20px;
+      background: #f5f5f5;
+    }
+    textarea {
+      width: 80%;
+      margin: 10px;
+      padding: 10px;
+      font-size: 16px;
+      resize: vertical;
+    }
+    input {
+      padding: 10px;
+      margin: 5px;
+      font-size: 16px;
+      width: 60%;
+    }
+    button {
+      padding: 10px 20px;
+      margin: 5px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      color: white;
+    }
+    .encrypt-btn { background: #ed3833; }
+    .decrypt-btn { background: #00bd56; }
+    .clear-btn   { background: #1089ff; }
+    h1 { color: #333; }
+    p { font-size: 14px; color: #555; }
+  </style>
 </head>
 <body>
-    <h1>Encriptar y Desencriptar Texto</h1>
-    <textarea id="inputText" placeholder="Ingrese texto aquí..."></textarea><br>
-    <button onclick="encrypt()">Encriptar</button>
-    <button onclick="decrypt()">Desencriptar</button>
-    <h2>Resultado:</h2>
-    <textarea id="outputText" readonly></textarea>
-    <p>Heyy el encriptamiento solo dura 24 horas, luego será imposible desencriptar el texto</p>
+  <h1>🔐 Encriptar y Desencriptar Texto</h1>
+  
+  <textarea id="inputText" placeholder="Ingrese el texto aquí..."></textarea><br>
 
-    <script>
-        // Clave fija para encriptar y desencriptar
-        const MASTER_KEY = "123";
+  <input type="password" id="key" placeholder="Ingrese una clave secreta (no la olvide)" /><br>
 
-        function encrypt() {
-            const text = document.getElementById('inputText').value;
+  <button class="encrypt-btn" onclick="encrypt()">Encriptar</button>
+  <button class="decrypt-btn" onclick="decrypt()">Desencriptar</button>
+  <button class="clear-btn" onclick="clearFields()">Limpiar</button>
 
-            if (!text) {
-                alert('Por favor, ingrese texto para encriptar.');
-                return;
-            }
+  <h2>Resultado:</h2>
+  <textarea id="outputText" readonly></textarea>
 
-            // Encriptar el texto utilizando la clave fija
-            const encrypted = CryptoJS.AES.encrypt(text, MASTER_KEY).toString();
-            document.getElementById('outputText').value = encrypted;
-            alert('Texto encriptado con éxito.');
+  <p>🕒 Los mensajes encriptados caducan automáticamente después de 24 horas.  
+     Asegúrese de recordar su clave: sin ella, el texto no puede recuperarse.</p>
+
+  <script>
+    // Encriptar el texto con la clave ingresada y un timestamp
+    function encrypt() {
+      const text = document.getElementById("inputText").value.trim();
+      const key = document.getElementById("key").value;
+
+      if (!text || !key) {
+        alert("Ingrese texto y una clave antes de encriptar.");
+        return;
+      }
+
+      const payload = {
+        text: text,
+        timestamp: Date.now()
+      };
+
+      const encrypted = CryptoJS.AES.encrypt(JSON.stringify(payload), key).toString();
+      document.getElementById("outputText").value = encrypted;
+      alert("Texto encriptado correctamente.");
+    }
+
+    // Desencriptar el texto con verificación de tiempo (24h)
+    function decrypt() {
+      const encryptedText = document.getElementById("inputText").value.trim();
+      const key = document.getElementById("key").value;
+
+      if (!encryptedText || !key) {
+        alert("Ingrese texto encriptado y la clave para desencriptar.");
+        return;
+      }
+
+      try {
+        const decrypted = CryptoJS.AES.decrypt(encryptedText, key).toString(CryptoJS.enc.Utf8);
+        if (!decrypted) throw new Error();
+
+        const data = JSON.parse(decrypted);
+        const now = Date.now();
+        const age = now - data.timestamp;
+
+        // 24 horas = 86,400,000 milisegundos
+        if (age > 24 * 60 * 60 * 1000) {
+          alert("⏰ El texto ha expirado. No puede ser desencriptado después de 24 horas.");
+          document.getElementById("outputText").value = "";
+          return;
         }
 
-        function decrypt() {
-            const encryptedText = document.getElementById('inputText').value;
+        document.getElementById("outputText").value = data.text;
+        alert("Texto desencriptado correctamente.");
+      } catch (error) {
+        alert("❌ No se pudo desencriptar. Clave incorrecta o texto inválido.");
+      }
+    }
 
-            if (!encryptedText) {
-                alert('por favor ingrese texto encriptado para desencriptar.');
-                return;
-            }
-
-            try {
-                // Desencriptar el texto utilizando la clave fija
-                const decrypted = CryptoJS.AES.decrypt(encryptedText, MASTER_KEY).toString(CryptoJS.enc.Utf8);
-                if (!decrypted) throw new Error();
-
-                document.getElementById('outputText').value = decrypted;
-                alert('Texto desencriptado con éxito.');
-            } catch (error) {
-                alert('No se pudo desencriptar. Verifique el texto encriptado.');
-            }
-        }
-    </script>
+    function clearFields() {
+      document.getElementById("inputText").value = "";
+      document.getElementById("outputText").value = "";
+      document.getElementById("key").value = "";
+    }
+  </script>
 </body>
 </html>
