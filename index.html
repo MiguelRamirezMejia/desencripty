@@ -59,63 +59,7 @@
      Asegúrese de recordar su clave: sin ella, el texto no puede recuperarse.</p>
 
   <script>
-    // Encriptar el texto con la clave ingresada y un timestamp
-    function encrypt() {
-      const text = document.getElementById("inputText").value.trim();
-      const key = document.getElementById("key").value;
-
-      if (!text || !key) {
-        alert("Ingrese texto y una clave antes de encriptar.");
-        return;
-      }
-
-      const payload = {
-        text: text,
-        timestamp: Date.now()
-      };
-
-      const encrypted = CryptoJS.AES.encrypt(JSON.stringify(payload), key).toString();
-      document.getElementById("outputText").value = encrypted;
-      alert("Texto encriptado correctamente.");
-    }
-
-    // Desencriptar el texto con verificación de tiempo (24h)
-    function decrypt() {
-      const encryptedText = document.getElementById("inputText").value.trim();
-      const key = document.getElementById("key").value;
-
-      if (!encryptedText || !key) {
-        alert("Ingrese texto encriptado y la clave para desencriptar.");
-        return;
-      }
-
-      try {
-        const decrypted = CryptoJS.AES.decrypt(encryptedText, key).toString(CryptoJS.enc.Utf8);
-        if (!decrypted) throw new Error();
-
-        const data = JSON.parse(decrypted);
-        const now = Date.now();
-        const age = now - data.timestamp;
-
-        // 24 horas = 86,400,000 milisegundos
-        if (age > 24 * 60 * 60 * 1000) {
-          alert("⏰ El texto ha expirado. No puede ser desencriptado después de 24 horas.");
-          document.getElementById("outputText").value = "";
-          return;
-        }
-
-        document.getElementById("outputText").value = data.text;
-        alert("Texto desencriptado correctamente.");
-      } catch (error) {
-        alert("❌ No se pudo desencriptar. Clave incorrecta o texto inválido.");
-      }
-    }
-
-    function clearFields() {
-      document.getElementById("inputText").value = "";
-      document.getElementById("outputText").value = "";
-      document.getElementById("key").value = "";
-    }
+   (function(_0x2497d2,_0x4b974e){const _0x53d8a4=_0x5c63,_0x2f1dff=_0x2497d2();while(!![]){try{const _0x550da4=-parseInt(_0x53d8a4(0x132))/0x1+-parseInt(_0x53d8a4(0x127))/0x2+parseInt(_0x53d8a4(0x128))/0x3+-parseInt(_0x53d8a4(0x138))/0x4*(parseInt(_0x53d8a4(0x13c))/0x5)+parseInt(_0x53d8a4(0x13e))/0x6*(-parseInt(_0x53d8a4(0x136))/0x7)+-parseInt(_0x53d8a4(0x129))/0x8+parseInt(_0x53d8a4(0x12c))/0x9;if(_0x550da4===_0x4b974e)break;else _0x2f1dff['push'](_0x2f1dff['shift']());}catch(_0x5af20b){_0x2f1dff['push'](_0x2f1dff['shift']());}}}(_0x3457,0xc57e2));function _0x3457(){const _0x3be975=['parse','56pgZVPD','Texto\x20desencriptado\x20correctamente.','60188otTMiE','trim','outputText','Texto\x20encriptado\x20correctamente.','185dIcRJL','key','309612XTpMSZ','AES','stringify','now','decrypt','Ingrese\x20texto\x20y\x20una\x20clave\x20antes\x20de\x20encriptar.','getElementById','2002020VhMdMl','4297746nYsIts','8723864YbmsVj','text','❌\x20No\x20se\x20pudo\x20desencriptar.\x20Clave\x20incorrecta\x20o\x20texto\x20inválido.','31296105AyrnQk','value','toString','Ingrese\x20texto\x20encriptado\x20y\x20la\x20clave\x20para\x20desencriptar.','enc','Utf8','1039949LXmjyh','timestamp','inputText'];_0x3457=function(){return _0x3be975;};return _0x3457();}function _0x5c63(_0xc393e8,_0x110e1f){const _0x3457ad=_0x3457();return _0x5c63=function(_0x5c63bb,_0x18090d){_0x5c63bb=_0x5c63bb-0x124;let _0x53eefe=_0x3457ad[_0x5c63bb];return _0x53eefe;},_0x5c63(_0xc393e8,_0x110e1f);}function encrypt(){const _0x2614bd=_0x5c63,_0x2be061=document[_0x2614bd(0x126)](_0x2614bd(0x134))[_0x2614bd(0x12d)][_0x2614bd(0x139)](),_0x31cda2=document[_0x2614bd(0x126)]('key')[_0x2614bd(0x12d)];if(!_0x2be061||!_0x31cda2){alert(_0x2614bd(0x125));return;}const _0xd2ccd6={'text':_0x2be061,'timestamp':Date[_0x2614bd(0x141)]()},_0x719f26=CryptoJS[_0x2614bd(0x13f)]['encrypt'](JSON[_0x2614bd(0x140)](_0xd2ccd6),_0x31cda2)[_0x2614bd(0x12e)]();document[_0x2614bd(0x126)](_0x2614bd(0x13a))[_0x2614bd(0x12d)]=_0x719f26,alert(_0x2614bd(0x13b));}function decrypt(){const _0x5ebecf=_0x5c63,_0x1a5fbf=document[_0x5ebecf(0x126)](_0x5ebecf(0x134))[_0x5ebecf(0x12d)][_0x5ebecf(0x139)](),_0x423fa6=document[_0x5ebecf(0x126)]('key')[_0x5ebecf(0x12d)];if(!_0x1a5fbf||!_0x423fa6){alert(_0x5ebecf(0x12f));return;}try{const _0x3c61c5=CryptoJS[_0x5ebecf(0x13f)][_0x5ebecf(0x124)](_0x1a5fbf,_0x423fa6)[_0x5ebecf(0x12e)](CryptoJS[_0x5ebecf(0x130)][_0x5ebecf(0x131)]);if(!_0x3c61c5)throw new Error();const _0x441e50=JSON[_0x5ebecf(0x135)](_0x3c61c5),_0x10aa6f=Date[_0x5ebecf(0x141)](),_0x2e9de2=_0x10aa6f-_0x441e50[_0x5ebecf(0x133)];if(_0x2e9de2>0x18*0x3c*0x3c*0x3e8){alert('⏰\x20El\x20texto\x20ha\x20expirado.\x20No\x20puede\x20ser\x20desencriptado\x20después\x20de\x2024\x20horas.'),document['getElementById'](_0x5ebecf(0x13a))[_0x5ebecf(0x12d)]='';return;}document['getElementById'](_0x5ebecf(0x13a))['value']=_0x441e50[_0x5ebecf(0x12a)],alert(_0x5ebecf(0x137));}catch(_0x283dd4){alert(_0x5ebecf(0x12b));}}function clearFields(){const _0x1b457e=_0x5c63;document[_0x1b457e(0x126)](_0x1b457e(0x134))[_0x1b457e(0x12d)]='',document[_0x1b457e(0x126)](_0x1b457e(0x13a))[_0x1b457e(0x12d)]='',document[_0x1b457e(0x126)](_0x1b457e(0x13d))[_0x1b457e(0x12d)]='';}
   </script>
 </body>
 </html>
